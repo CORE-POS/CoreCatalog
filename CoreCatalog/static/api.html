@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+	<title>CoreCatalog</title>
+</head>
+<body>
+<h3>GET methods</h3>
+<ul>
+	<li><b>/item/&lt;upc&gt;</b> get info about item</li>
+	<li><b>/all/</b> get all items (note: not browser-friendly)</li>
+</ul>
+<h3>POST methods</h3>
+<ul>
+	<li><b>/item/</b> add/update an item. Request type is JSON. Required fields
+    are <i>apikey</i> and <i>upc</i>. Optional fields are <i>short_description</i>,
+    <i>long_description</i>, <i>brand</i>, and <i>unit_size</i>.
+</ul>
+</body>
+</html>
