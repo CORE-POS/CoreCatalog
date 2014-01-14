@@ -1,4 +1,4 @@
-from flask import send_from_directory, request, redirect, url_for, abort
+from flask import send_from_directory, request, redirect, url_for, abort, render_template
 from CoreCatalog import app
 from CoreCatalog.database import db_session
 from CoreCatalog.models import Items
@@ -8,6 +8,10 @@ from sqlalchemy import or_
 @app.route('/')
 def index():
 	return send_from_directory(app.static_folder,'api.html')
+
+@app.route('/search/')
+def search_form():
+    return render_template('search.html')
 
 @app.route('/item/<upc>')
 def show_item(upc):
@@ -23,8 +27,14 @@ def show_all_items():
 
     return json_as_configured([i.serialize() for i in items]);
 
-@app.route('/item/', methods=['POST'])
+@app.route('/item/', methods=['GET', 'POST'])
 def write_item():
+    if request.method == 'GET':
+        if request.args.get('upc'):
+            return redirect(url_for('show_item', upc=request.args.get('upc')))
+        else:
+            return redirect(url_for('search_form'))
+
     # upc and apikey are required fields
     if not(request.json) or not 'upc' in request.json or not 'apikey' in request.json:
         abort(400)
